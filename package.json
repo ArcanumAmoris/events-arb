@@ -1,0 +1,13 @@
+{
+  "name": "events-arb-scanner",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Logging-only prediction-market arbitrage scanner (Kalshi vs Polymarket US), free to run on GitHub Pages + Actions.",
+  "scripts": {
+    "scan": "node scripts/scan.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

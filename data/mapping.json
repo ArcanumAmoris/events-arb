@@ -1,0 +1,35 @@
+{
+  "_comment": "Manual list of equivalent contract pairs to compare across platforms. Add one entry per pair you want the scanner to track. Fill in real tickers/slugs before the workflow will produce real data — see README.md 'Adding a market pair'.",
+  "_example_entry_fields": {
+    "id": "unique slug used in the log/history, keep stable once you start logging a pair",
+    "label": "human-readable name shown on the dashboard",
+    "expiration": "ISO 8601 UTC timestamp of contract expiration/settlement",
+    "settlement_note": "free text - what index/source and timestamp both platforms settle to. Leave exact wording here so you can eyeball whether it still looks like a true match",
+    "assume_locked": "true if you've verified both contracts settle to the identical underlying index and identical settlement timestamp. false (or omit) makes the scanner tag any opportunity found here as basis_risk instead of locked, regardless of price",
+    "kalshi": {
+      "ticker": "the Kalshi market ticker, e.g. KXBTCD-26DEC31-T100000",
+      "buy_side": "yes or no - which side you'd buy on Kalshi to form the hedge with the Polymarket leg below"
+    },
+    "polymarket": {
+      "slug": "the Polymarket US market slug, e.g. btc-100k-2026",
+      "buy_side": "yes or no - which side you'd buy on Polymarket to form the complementary hedge"
+    }
+  },
+  "pairs": [
+    {
+      "id": "btc-100k-2026-eoy",
+      "label": "BTC ≥ $100k at 2026 year-end",
+      "expiration": "2026-12-31T23:59:00Z",
+      "settlement_note": "REPLACE ME: confirm both platforms settle to the same index (e.g. both use a specific exchange BTC/USD reference rate) and the same settlement instant before setting assume_locked to true.",
+      "assume_locked": false,
+      "kalshi": {
+        "ticker": "REPLACE_ME_KALSHI_TICKER",
+        "buy_side": "yes"
+      },
+      "polymarket": {
+        "slug": "REPLACE_ME_POLYMARKET_SLUG",
+        "buy_side": "no"
+      }
+    }
+  ]
+}

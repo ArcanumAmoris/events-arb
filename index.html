@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Events Arb — Opportunity Dashboard</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="page-header">
+    <h1>Events Arb</h1>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Toggle theme">🌓</button>
+  </header>
+
+  <main>
+    <section id="summary" class="summary-row"></section>
+
+    <section id="live-cards" class="cards"></section>
+
+    <section class="history-section">
+      <h2>History</h2>
+      <div id="history-table-wrap">
+        <table id="history-table">
+          <thead>
+            <tr>
+              <th>Detected</th>
+              <th>Trade</th>
+              <th>Expiration</th>
+              <th>Profit</th>
+              <th>Return</th>
+              <th>Annualized</th>
+              <th>Verdict</th>
+            </tr>
+          </thead>
+          <tbody id="history-body"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
