@@ -17,6 +17,21 @@
   },
   "pairs": [
     {
+      "id": "btc-80k-85k-eoy2026",
+      "label": "BTC $80k–$85k bracket at 2026 year-end",
+      "expiration": "2027-01-01T05:00:00Z",
+      "settlement_note": "Confirmed live 2026-09-27: both settle off CF Benchmarks' Bitcoin Real-Time Index (BRTI) at 12:00 AM ET Jan 1 2027. BUT the averaging method differs - Kalshi rules_primary says 'simple average of the sixty seconds of BRTI'; Polymarket US's description says 'trimmed mean...excluding top 20% and bottom 20%' over the same 60s window. That's a real methodology mismatch (could diverge in a volatile final minute), so this stays tagged basis_risk, not locked, per the project's own rule for differing settlement mechanics.",
+      "assume_locked": false,
+      "kalshi": {
+        "ticker": "KXBTCY-27JAN0100-B82500",
+        "buy_side": "yes"
+      },
+      "polymarket": {
+        "slug": "cpc-btc-pricerange-yr-12-31-2026-82500",
+        "buy_side": "no"
+      }
+    },
+    {
       "id": "btc-100k-2026-eoy",
       "label": "BTC ≥ $100k at 2026 year-end",
       "expiration": "2026-12-31T23:59:00Z",

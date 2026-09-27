@@ -61,6 +61,7 @@ function legBox(leg, platformName) {
       <div class="detail">${leg.contracts} contracts (${leg.side.toUpperCase()})</div>
       <div class="detail">@ ${leg.priceCents != null ? leg.priceCents + "¢" : "—"}</div>
       <div class="detail">Cost: ${fmtMoney(leg.costDollars)}</div>
+      ${leg.executionConfirmed === false ? '<div class="detail" style="color:var(--red-text)">⚠ price not confirmed tradable</div>' : ""}
     </div>
   `;
 }

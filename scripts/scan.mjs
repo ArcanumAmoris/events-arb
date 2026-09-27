@@ -56,7 +56,12 @@ async function evaluatePair(pair) {
   }
 
   const kalshiLadder = pair.kalshi.buy_side === "no" ? kalshiBook.noAsks : kalshiBook.yesAsks;
-  const polyLadder = polyBook.offers; // polymarket "buy_side" just labels which outcome this slug/book represents
+  // Polymarket US only exposes a real two-sided book for "yes"; buying "no"
+  // uses a derived ladder (1 - yes bid) that is NOT confirmed executable -
+  // see the big caveat comment in polymarket.mjs. polyExecutionConfirmed
+  // flags this so it can be surfaced on the dashboard/log.
+  const polyLadder = pair.polymarket.buy_side === "no" ? polyBook.noAsksDerived : polyBook.offers;
+  const polyExecutionConfirmed = pair.polymarket.buy_side !== "no";
 
   const size = CONFIG.TARGET_SIZE_CONTRACTS;
   const kalshiFill = walkKalshiBook(kalshiLadder, size);
@@ -106,6 +111,7 @@ async function evaluatePair(pair) {
         priceCents: filled > 0 ? Math.round(polyAtSize.costCents / filled) : null,
         costDollars: polyAtSize.costCents / 100,
         depthAvailable: polyFill.filled,
+        executionConfirmed: polyExecutionConfirmed,
         url: `https://polymarket.us/market/${pair.polymarket.slug}`,
       },
     },

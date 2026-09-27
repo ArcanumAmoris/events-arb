@@ -1,1 +1,40 @@
-[]
+[
+  {
+    "id": "btc-80k-85k-eoy2026",
+    "label": "BTC $80k–$85k bracket at 2026 year-end",
+    "detectedAt": "2026-09-27T22:34:05.636Z",
+    "expiration": "2027-01-01T05:00:00Z",
+    "daysToExpiration": 95.27,
+    "tagged": "basis_risk",
+    "legs": {
+      "kalshi": {
+        "ticker": "KXBTCY-27JAN0100-B82500",
+        "side": "yes",
+        "title": "BTC price  on Jan 1, 2027?",
+        "contracts": 100,
+        "priceCents": 12,
+        "costDollars": 12,
+        "depthAvailable": 100,
+        "url": "https://kalshi.com/markets/KXBTCY-27JAN0100-B82500"
+      },
+      "polymarket": {
+        "slug": "cpc-btc-pricerange-yr-12-31-2026-82500",
+        "side": "no",
+        "title": "Bitcoin price at the end of 2026?",
+        "contracts": 100,
+        "priceCents": 84,
+        "costDollars": 84,
+        "depthAvailable": 100,
+        "executionConfirmed": false,
+        "url": "https://polymarket.us/market/cpc-btc-pricerange-yr-12-31-2026-82500"
+      }
+    },
+    "combinedCostDollars": 96,
+    "guaranteedPayoutDollars": 100,
+    "profitDollars": 4,
+    "returnPct": 4.17,
+    "annualizedReturnPct": 15.96,
+    "tbillAnnualYieldPctAtDetection": 4.5,
+    "verdict": "NOT_WORTH_IT"
+  }
+]

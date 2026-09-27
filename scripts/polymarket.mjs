@@ -12,10 +12,11 @@ async function getJson(url) {
 
 /**
  * Fetch a single market's summary by slug.
- * GET /markets/{slug}
+ * GET /market/slug/{slug}  (confirmed live 2026-09-27 - note singular
+ * "market", not "markets"; the plural path 404s)
  */
 export async function fetchPolymarketMarket(slug) {
-  const data = await getJson(`${CONFIG.POLYMARKET_BASE_URL}/markets/${encodeURIComponent(slug)}`);
+  const data = await getJson(`${CONFIG.POLYMARKET_BASE_URL}/market/slug/${encodeURIComponent(slug)}`);
   return data.market ?? data;
 }
 
@@ -23,32 +24,55 @@ export async function fetchPolymarketMarket(slug) {
  * Fetch the order book for a market by slug.
  * GET /markets/{slug}/book
  *
- * Unlike Kalshi, Polymarket US's book is a normal two-sided book for the
- * outcome token this market/slug represents: "bids" are resting buy orders,
- * "offers" are resting sell orders (asks). To BUY this outcome, walk the
- * "offers" ladder ascending by price. A community-reported gateway quirk
- * (see repo README) wraps bids/offers inside a `marketData` envelope on some
- * gateway versions - this function checks both shapes defensively.
+ * Confirmed against live responses (2026-09-27): each level is shaped like
+ * { "px": { "value": "0.16", "currency": "USD" }, "qty": "17535.59" } - this
+ * function unwraps that. A community-reported gateway quirk (see repo
+ * README) wraps bids/offers inside a `marketData` envelope on some gateway
+ * versions; this function checks both shapes defensively.
+ *
+ * IMPORTANT CAVEAT, confirmed live: every market we inspected only exposes
+ * ONE real two-sided book, for the "Yes"/"long" outcome ("bids" = resting
+ * buy orders, "offers" = resting sell orders/asks for Yes). There is no
+ * separate order book for "No"/"short" reachable through this public
+ * gateway - the /bbo endpoint's `shortQuote` field is a DERIVED display
+ * quote (== 1 - best Yes bid), not evidence of a tradable No order sitting
+ * there. So:
+ *   - buying YES: walk `offers` directly (real resting asks).
+ *   - buying NO: this script derives an ask ladder by inverting the YES
+ *     BIDS (price = 1 - bid_price), the same reciprocal trick used for
+ *     Kalshi. This is a best-effort estimate of what a No position would
+ *     cost, NOT a confirmed executable price - there is no proof from the
+ *     public API that Polymarket US lets you place a resting buy order for
+ *     "No" the way you can on Kalshi, versus needing to short/sell Yes
+ *     (different mechanics, possibly margin-gated). VERIFY INSIDE YOUR
+ *     ACTUAL POLYMARKET US ACCOUNT before trusting a "buy_side: no" number
+ *     from this script.
  */
 export async function fetchPolymarketOrderbook(slug) {
   const data = await getJson(`${CONFIG.POLYMARKET_BASE_URL}/markets/${encodeURIComponent(slug)}/book`);
   const book = data.marketData ?? data;
 
-  const offers = (book.offers ?? []).map((lvl) => ({
-    price: Number(lvl.price ?? lvl.px ?? lvl?.price?.value),
-    qty: Number(lvl.size ?? lvl.qty ?? lvl?.size?.value),
-  }));
-  const bids = (book.bids ?? []).map((lvl) => ({
-    price: Number(lvl.price ?? lvl.px ?? lvl?.price?.value),
-    qty: Number(lvl.size ?? lvl.qty ?? lvl?.size?.value),
-  }));
+  function parseLevel(lvl) {
+    const price = Number(lvl.px?.value ?? lvl.price?.value ?? lvl.price ?? lvl.px);
+    const qty = Number(lvl.qty ?? lvl.size?.value ?? lvl.size);
+    return { price, qty };
+  }
+
+  const offers = (book.offers ?? []).map(parseLevel).filter((l) => Number.isFinite(l.price));
+  const bids = (book.bids ?? []).map(parseLevel).filter((l) => Number.isFinite(l.price));
 
   // Sort asks cheapest-first, bids richest-first, just in case the gateway
   // doesn't guarantee order.
   offers.sort((a, b) => a.price - b.price);
   bids.sort((a, b) => b.price - a.price);
 
-  return { offers, bids };
+  // Derived (unconfirmed-executable) ask ladder for buying "No" - see caveat
+  // above. Cheapest first.
+  const noAsksDerived = bids
+    .map(({ price, qty }) => ({ price: Number((1 - price).toFixed(4)), qty }))
+    .sort((a, b) => a.price - b.price);
+
+  return { offers, bids, noAsksDerived };
 }
 
 /**

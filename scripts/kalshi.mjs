@@ -35,12 +35,28 @@ export async function fetchKalshiMarket(ticker) {
  */
 export async function fetchKalshiOrderbook(ticker) {
   const data = await getJson(`${CONFIG.KALSHI_BASE_URL}/markets/${encodeURIComponent(ticker)}/orderbook`);
-  const book = data.orderbook ?? data;
 
-  // Raw resting bids, each [price_cents, qty]. Kalshi may omit a side entirely
-  // if there are no resting orders on it.
-  const yesBids = (book.yes ?? []).map(([price, qty]) => ({ price, qty }));
-  const noBids = (book.no ?? []).map(([price, qty]) => ({ price, qty }));
+  // Confirmed against live responses (2026-09-27): the default response
+  // shape is `{ "orderbook_fp": { "yes_dollars": [[priceStr, qtyStr], ...],
+  // "no_dollars": [...] } }` - dollar-string prices like "0.8750", NOT the
+  // integer-cents `{ "orderbook": { "yes": [[cents, qty]] } }` shape shown
+  // in some doc examples. Handle both defensively and normalize everything
+  // to integer cents internally.
+  const fp = data.orderbook_fp;
+  const legacy = data.orderbook;
+  const rawYes = fp?.yes_dollars ?? legacy?.yes ?? [];
+  const rawNo = fp?.no_dollars ?? legacy?.no ?? [];
+  const isDollarFormat = Boolean(fp);
+
+  function toCents(priceRaw) {
+    const n = Number(priceRaw);
+    return isDollarFormat ? Math.round(n * 100) : Math.round(n);
+  }
+
+  // Raw resting bids, each level normalized to { price: cents, qty }. Kalshi
+  // may omit a side entirely if there are no resting orders on it.
+  const yesBids = rawYes.map(([price, qty]) => ({ price: toCents(price), qty: Number(qty) }));
+  const noBids = rawNo.map(([price, qty]) => ({ price: toCents(price), qty: Number(qty) }));
 
   // Derived ask ladders (what you'd actually pay to buy each side), sorted
   // cheapest-first.
