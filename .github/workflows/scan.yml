@@ -2,9 +2,12 @@ name: Scan for arbitrage opportunities
 
 on:
   schedule:
-    # Every 10 minutes. GitHub may delay this somewhat under load - that's
-    # fine for a logging-only scanner.
-    - cron: "*/10 * * * *"
+    # Every 5 minutes. GitHub Actions' scheduler does not reliably honor
+    # anything finer than 5-minute steps (a "*/2" cron is accepted but
+    # GitHub silently coalesces/drops runs faster than ~5 min under load -
+    # we already saw a plain */10 sit idle for 2+ hours before its first
+    # tick). 5 min is the realistic floor for a free scheduled workflow.
+    - cron: "*/5 * * * *"
   workflow_dispatch: {} # lets you trigger a run manually from the Actions tab
 
 permissions:
