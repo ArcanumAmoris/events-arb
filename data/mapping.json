@@ -32,6 +32,21 @@
       }
     },
     {
+      "id": "btc-touch-120k-2026",
+      "label": "BTC touches $120k any time in 2026",
+      "expiration": "2027-01-01T04:59:00Z",
+      "settlement_note": "Confirmed live 2026-09-27: both source CF Benchmarks' BRTI and both resolve Yes if BTC ever trades above $119,999.99 at any point in 2026 (a 'one-touch' market, not just an EOY snapshot). Same basis-risk issue as the other pair though: Polymarket's text explicitly says the trigger is a trimmed-mean over any 60s window; Kalshi's rules_primary just says 'spot price is above' with no averaging described for this series. A single-tick spike might trip one and not the other. Stays basis_risk.",
+      "assume_locked": false,
+      "kalshi": {
+        "ticker": "KXBTCMAXY-26DEC31-119999.99",
+        "buy_side": "yes"
+      },
+      "polymarket": {
+        "slug": "cpc-btc-hitprice-high-yr-12-31-2026-120k",
+        "buy_side": "no"
+      }
+    },
+    {
       "id": "btc-100k-2026-eoy",
       "label": "BTC ≥ $100k at 2026 year-end",
       "expiration": "2026-12-31T23:59:00Z",
