@@ -1670,5 +1670,81 @@
     "annualizedReturnPct": -3.47,
     "tbillAnnualYieldPctAtDetection": 4.5,
     "verdict": "NOT_WORTH_IT"
+  },
+  {
+    "id": "btc-80k-85k-eoy2026",
+    "label": "BTC $80k–$85k bracket at 2026 year-end",
+    "detectedAt": "2026-10-02T08:40:46.697Z",
+    "expiration": "2027-01-01T05:00:00Z",
+    "daysToExpiration": 90.85,
+    "tagged": "basis_risk",
+    "legs": {
+      "kalshi": {
+        "ticker": "KXBTCY-27JAN0100-B82500",
+        "side": "yes",
+        "title": "BTC price  on Jan 1, 2027?",
+        "contracts": 100,
+        "priceCents": 13,
+        "costDollars": 13,
+        "depthAvailable": 100,
+        "url": "https://kalshi.com/markets/KXBTCY-27JAN0100-B82500"
+      },
+      "polymarket": {
+        "slug": "cpc-btc-pricerange-yr-12-31-2026-82500",
+        "side": "no",
+        "title": "Bitcoin price at the end of 2026?",
+        "contracts": 100,
+        "priceCents": 83,
+        "costDollars": 83,
+        "depthAvailable": 100,
+        "executionConfirmed": false,
+        "url": "https://polymarket.us/market/cpc-btc-pricerange-yr-12-31-2026-82500"
+      }
+    },
+    "combinedCostDollars": 96,
+    "guaranteedPayoutDollars": 100,
+    "profitDollars": 4,
+    "returnPct": 4.17,
+    "annualizedReturnPct": 16.74,
+    "tbillAnnualYieldPctAtDetection": 4.5,
+    "verdict": "NOT_WORTH_IT"
+  },
+  {
+    "id": "btc-touch-120k-2026",
+    "label": "BTC touches $120k any time in 2026",
+    "detectedAt": "2026-10-02T08:40:46.818Z",
+    "expiration": "2027-01-01T04:59:00Z",
+    "daysToExpiration": 90.85,
+    "tagged": "basis_risk",
+    "legs": {
+      "kalshi": {
+        "ticker": "KXBTCMAXY-26DEC31-119999.99",
+        "side": "yes",
+        "title": "Will Bitcoin be above $119,999.99 by Dec 31, 2026 at 11:59 PM ET?",
+        "contracts": 100,
+        "priceCents": 13,
+        "costDollars": 12.8848,
+        "depthAvailable": 100,
+        "url": "https://kalshi.com/markets/KXBTCMAXY-26DEC31-119999.99"
+      },
+      "polymarket": {
+        "slug": "cpc-btc-hitprice-high-yr-12-31-2026-120k",
+        "side": "no",
+        "title": "How high will Bitcoin get this year?",
+        "contracts": 100,
+        "priceCents": 89,
+        "costDollars": 88.94,
+        "depthAvailable": 100,
+        "executionConfirmed": false,
+        "url": "https://polymarket.us/market/cpc-btc-hitprice-high-yr-12-31-2026-120k"
+      }
+    },
+    "combinedCostDollars": 101.8248,
+    "guaranteedPayoutDollars": 100,
+    "profitDollars": -1.82,
+    "returnPct": -1.79,
+    "annualizedReturnPct": -7.2,
+    "tbillAnnualYieldPctAtDetection": 4.5,
+    "verdict": "NOT_WORTH_IT"
   }
 ]
